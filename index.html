@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <base href="/">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>boggle</title>
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/styles/styles.css" rel="stylesheet">
+</head>
+<body ng-controller="MainCtrl">
+  <div id="clock">
+    {{ clock }}
+  </div>
+  <div class="controls">
+    <button ng-click="startGame()">start game</button>
+  </div>
+  <div id="words">
+    <input ng-model="word" ng-keyup="findWord($event)" type="text" placeholder="word">
+    <ul>
+      <li ng-repeat="word in words">
+        <span ng-class="'{{ word.status }}'">{{ word.text }}</span>
+      </li>
+    </ul>
+  </div>
+
+  <div id="board">
+    <div class="square" ng-repeat="letter in board track by $index" ng-class="{ square: true, in_path: isInPath($index), last_in_path: isLastInPath($index) }">{{ letter }}</div>
+  </div>
+
+     <!--
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
+    -->
+   <script src="/scripts/angular.min.js"></script>
+   <script src="/scripts/app.js"></script>
+   <script src="/scripts/controllers/main.js"></script>
+   <script src="/scripts/services/board.js"></script>
+</body>
+</html>

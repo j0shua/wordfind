@@ -5,12 +5,13 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>boggle</title>
+        <title>wordfind</title>
         <link rel="icon" type="image/png" href="favicon.png"/>
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/styles/bootstrap.css" rel="stylesheet">
+        <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet"> -->
         <link href="/styles/styles.css" rel="stylesheet">
     </head>
-    <body ng-controller="MainCtrl">
+    <body ng-cloak ng-controller="MainCtrl">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -36,13 +37,20 @@
                 </div>
                 <div class="col-md-6">
                     <div id="words">
-                        <div>
+                        <div class="table-responsive">
                             <h2>word list</h2>
-                            <ul>
-                                <li ng-repeat="word in words">
-                                    <span ng-class="'{{ word.status }}'">{{ word.text }}</span>
-                                </li>
-                            </ul>
+                            <table class="table table-condensed table-striped">
+                                <tr>
+                                    <th>word</td>
+                                    <th>status</td>
+                                    <th>points</td>
+                                </tr>
+                                <tr ng-repeat="word in words">
+                                    <td><span ng-class="'{{ word.status }}'">{{ word.text }}</span></td>
+                                    <td>{{ word.status }}</td>
+                                    <td>{{ word.points }}</td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>

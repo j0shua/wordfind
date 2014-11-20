@@ -1,0 +1,90 @@
+1) start game should be overlaying the board
+  ( if (gameIsLive -> ng-hide the start overlay (which has a start new game!' button)
+
+2) board needs to track the state of the game live/disabled state depending on:
+  board.game <---> hmm how should that relationship go
+  maybe just 2 services and they can make promises to one another -- that sounds terrible...or awesome 
+  clock running
+  ...
+
+3) need to add countdown clock (should use ng's $timeout/$interval service
+  - whats the best way to sync the clock? 
+    - call multiple times per second to overlay cause w/ modern cpu's thats cheap?
+  -- AMINATIONZ
+  - architecture: should we pub-sub the clock off of the game/board's clock hmmmm
+      then can do things like: 
+        $broadcast('timeupdate:', {time: 0}) -> 
+        $on('timeupdate', function(kittehs){
+
+          // hide the overlay 
+          // update the clock hahaha 
+          // aka data bind the clock to a {{ format(time) }} maybe theres already a module
+          $scope.gameLive = true 
+          saveTheWorld(kittehs);
+        )
+
+4) challenge a friend - send to friend 
+  architecture: game types (vs challenge, would there be vs simulaneous?/multiplayer, single/'beat the clock')
+  - score to beat in vs challenge repeat games? replay, double or nothin hah
+  - maybe versus or many with a live chat room use the same socket to send the word events 
+    (immediately cross off common words? hmmm dunno if thats better) 
+    theres no cheat/revealing words to another player type of risk since it only crosses off for the one's that 
+    have already gotten the word (gotten is totes a word) and they both have 
+    - also u can send noise event / updates to everyone kinda taunty / kira just matched?annexed josh's word via push HOTness 
+    - should there be point fragments or shared ? 
+      - say there is a 5 person game and only 2 got one word do they share the points? or does no one get? 
+      - ^^ should that be configurable ? game type / rule options or is it too much complexity for the user, lets play dammit! 
+  - use sockets for chat between games (during games?)
+  
+
+5) backend / Db
+  - need to add table for 
+    game (results, who played, game setup positions / letters, vaid words?
+    valid words? they can always be calculated on the fly? see below
+  in the meantime can just mock it and use a mock service to auto return a board
+  should use browserify for these to share em from back end ? yes then can module.exports and import for FE as well as server
+, players / users (one table?)
+
+6) generate board 
+  ship to client
+  save in db.game start time,duration, players, game type, 
+  calculate all possible dict words ? yea/nae
+
+7) touch events slide thu a word oooooo :)
+  then would need to submit on fingerup (touchup?) yay ng makin
+
+8) when word.status gets updated animate the table, atwood style yellow? maybe overkill -> ratchet up the opacity ng-animate
+
+9) calculate all valid words
+  - use all longest words and then check all the substrings against the dictionary? 
+    words.push({ word: true}) don't even check just throw it in there? but check the list before checking the dict WAY shorter list ;)
+    maybe use { the: 1} 1 representing the point LOTS of wasted memory ... silly
+
+10) maybe use a trie on the server and a dict on the browser
+
+11) on end game sync the user list (over write it cause server is authority) ship dowm the full word list from the server
+  do we hold in memory? save to mongo collection? how big are these lists? how much memory would it take up with lots of simultaneous games
+    - lookup game -> valid words  
+    - count highest possible score, can just save it in the table
+  
+    // rules for word.lenth -> score
+    scoreForWord(word){
+      if (word.lenth == 3){
+        return 1;
+      etc
+    }
+
+    sum = 0;
+    for (word in wordlist){
+      sum = sum + scoreForWord(word);
+      // woulda been: sum = sum + word.score; if we stored it 
+
+      // or we can just do it on the client with a custom filter ++
+      word ............................. valid/invalid ............................ score 
+      {{ word.word}}  .................. {{ valid | checkmarkify }}................ {{ word.word | scoreForWord }}
+      the ............................. ✔ ..........................................1
+    }
+
+13) time left / countdown clock / spinner .... canvas?
+  color red last 5 seconds....
+  yellow last 10 or 15 .......
